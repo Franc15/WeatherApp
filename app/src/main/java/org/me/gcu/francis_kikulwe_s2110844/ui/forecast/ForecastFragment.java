@@ -158,6 +158,7 @@ public class ForecastFragment extends Fragment {
                     ForecastAdapter adapter = new ForecastAdapter(requireContext(), fetchedItems);
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                    txtHighLowTemp.setText("H: " + fetchedItems.get(0).getMaxTemperature().split(" ")[0] + " L: " + fetchedItems.get(0).getMinTemperature().split(" ")[0]);
                 });
             }).start();
             return view;
