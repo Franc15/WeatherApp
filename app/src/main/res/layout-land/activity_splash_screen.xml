@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--author: francis_kikulwe_s2110844-->
+<!-- author: francis_kikulwe_s2110844 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,10 +11,10 @@
         android:layout_height="wrap_content"
         android:text="Whatever the Weather"
         android:textStyle="bold"
-        android:textSize="32sp"
+        android:textSize="36sp"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"/>
+        android:layout_marginTop="100dp" />
 
     <ImageView
         android:id="@+id/app_logo"
@@ -23,19 +23,16 @@
         android:src="@drawable/eye_glasses"
         android:layout_below="@id/app_name_text"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        />
+        android:layout_marginTop="50dp" />
 
     <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/app_logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:id="@+id/progressBar"
-        android:indeterminate="true"
-        android:visibility="visible"
-        />
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/loading_text"
@@ -47,21 +44,17 @@
         android:layout_below="@id/progressBar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:visibility="visible"
-        />
+        android:visibility="visible" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="francis_kikulwe_s2110844"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textColor="@color/white"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:gravity="center"
-        />
-
-
+        android:gravity="center" />
 
 </RelativeLayout>
