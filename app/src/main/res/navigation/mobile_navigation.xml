@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_locations">
+
+    <fragment
+        android:id="@+id/navigation_forecast"
+        android:name="org.me.gcu.francis_kikulwe_s2110844.ui.forecast.ForecastFragment"
+        android:label="Forecast"
+        tools:layout="@layout/fragment_forecast" >
+        <argument
+            android:name="location"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_locations"
+        android:name="org.me.gcu.francis_kikulwe_s2110844.ui.locations.LocationsFragment"
+        android:label="Locations"
+        tools:layout="@layout/fragment_locations">
+        <action
+            android:id="@+id/action_navigation_locations_to_navigation_forecast"
+            app:destination="@id/navigation_forecast">
+            <argument
+                android:name="location"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="org.me.gcu.francis_kikulwe_s2110844.ui.maps.MapsFragment"
+        android:label="Maps"
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_navigation_map_to_navigation_forecast"
+            app:destination="@id/navigation_forecast">
+            <argument
+                android:name="location"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+</navigation>
