@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weather_main);
+        setContentView(R.layout.fragment_weather_main);
         // Set up the raw links to the graphical components
 //        rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
 //        startButton = (Button)findViewById(R.id.startButton);
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
     }
 
     private void initRecyclerView() {
-        recyclerViewDaily = findViewById(R.id.view1);
+        recyclerViewDaily = findViewById(R.id.recyclerViewForecast);
         //recyclerViewDaily.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         int numberOfColumns = 3; // Change this to the desired number of columns
         GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns);

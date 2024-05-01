@@ -16,6 +16,13 @@ public class ForecastItem {
     public ForecastItem() {
     }
 
+    public ForecastItem(String day, String maxTemperature, String minTemperature, String weatherDescription) {
+        this.day = day;
+        this.maxTemperature = maxTemperature;
+        this.minTemperature = minTemperature;
+        this.weatherDescription = weatherDescription;
+    }
+
     public void setDay(String day) {
         this.day = day;
     }

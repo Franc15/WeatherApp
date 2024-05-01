@@ -10,10 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import org.me.gcu.francis_kikulwe_s2110844.R;
+import org.me.gcu.francis_kikulwe_s2110844.adapter.ForecastAdapter;
 import org.me.gcu.francis_kikulwe_s2110844.constants.Constants;
 import org.me.gcu.francis_kikulwe_s2110844.databinding.FragmentForecastBinding;
 import org.me.gcu.francis_kikulwe_s2110844.helper.SharedPreferenceManager;
@@ -71,14 +74,6 @@ public class ForecastFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-//                int itemCount = adapter.getItemCount();
-//                if (itemCount > 1) {
-//                    if (position == 0) {
-//                        viewPager.setCurrentItem(itemCount - 2, false);
-//                    } else if (position == itemCount - 1) {
-//                        viewPager.setCurrentItem(1, false);
-//                    }
-//                }
             }
         });
 
@@ -101,15 +96,11 @@ public class ForecastFragment extends Fragment {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            // Create and return a new instance of your custom Fragment
-            // that displays the data for the current position
-//        return MyDataFragment.newInstance(getData(position));
             return MyDataFragment.newInstance(data.get(position));
         }
 
         @Override
         public int getItemCount() {
-            // Return the total number of items you want to display
             return data.size();
         }
     }
@@ -128,7 +119,7 @@ public class ForecastFragment extends Fragment {
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_weather_main, container, false);
+            View view = inflater.inflate(R.layout.fragment_weather_main, container, false);
             // Bind the data to your layout components
             final TextView txtWeatherCondition = view.findViewById(R.id.txtWeatherCondition);
             final TextView txtPubDate = view.findViewById(R.id.txtPubDate);
@@ -139,6 +130,7 @@ public class ForecastFragment extends Fragment {
             final TextView txtWindSpeed = view.findViewById(R.id.txtWind);
             final TextView txtPressure = view.findViewById(R.id.txtPressure);
             final ImageView imgWeatherIcon = view.findViewById(R.id.weatherIcon);
+            final RecyclerView recyclerView = view.findViewById(R.id.recyclerViewForecast);
 
             Data data = getArguments().getParcelable(ARG_DATA);
 
@@ -148,7 +140,6 @@ public class ForecastFragment extends Fragment {
             List<WeatherItem> weatherItemList = SharedPreferenceManager.retrieveWeatherItems(requireContext());
             WeatherItem weatherItem = weatherItemList.stream().filter(item -> item.getLocationName().equals(locationName)).findFirst().orElse(null);
 
-            //fetchWeatherData(data.getId());
 
             txtWeatherCondition.setText(weatherItem.getWeatherDescription());
             txtPubDate.setText(weatherItem.getPubDate());
@@ -159,15 +150,31 @@ public class ForecastFragment extends Fragment {
             txtWindSpeed.setText(weatherItem.getWindSpeed() + " km/h");
             imgWeatherIcon.setImageResource(Util.getWeatherIcon(weatherItem.getWeatherDescription()));
 //            txtHighLowTemp.setText("H: " + weatherItem.get() + "°C" + " L: " + weatherItem.getLowTemp() + "°C");
+//            List<ForecastItem> forecastItems = new ArrayList<>();
+            new Thread(() -> {
+                List<ForecastItem> fetchedItems = fetchWeatherData(data.getId());
+                requireActivity().runOnUiThread(() -> {
+                    ForecastAdapter adapter = new ForecastAdapter(requireContext(), fetchedItems);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                });
+            }).start();
             return view;
         }
     }
 
-    private static void fetchWeatherData(String locationId) {
+    private static List<ForecastItem> fetchWeatherData(String locationId) {
+        List<ForecastItem> forecastItems = new ArrayList<>();
         String url = "https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/" + locationId;
         String weatherForecastData = WeatherFetchingService.fetchWeatherDataFromAPI(url);
-//        forecastItems = onWeatherForecastDataFetched(weatherForecastData);
+        try {
+            forecastItems = RssFeedParser.parseThreeDayForecast(weatherForecastData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return forecastItems;
     }
+
 
     private static List<ForecastItem> onWeatherForecastDataFetched(String weatherForecastData) {
         List<ForecastItem> forecastItems = new ArrayList<>();

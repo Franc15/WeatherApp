@@ -44,7 +44,7 @@ public class MapsFragment extends Fragment {
                 String[] latLngArray = latLng.split(", ");
                 LatLng latLngObj = new LatLng(Double.parseDouble(latLngArray[0]), Double.parseDouble(latLngArray[1]));
                 Marker marker = googleMap.addMarker(new MarkerOptions().position(latLngObj).title(location));
-                marker.setTag(location); // Set the location as a tag for later use
+                marker.setTag(location);
             });
 
             LatLng glasgow = new LatLng(55.8642, -4.2518);
